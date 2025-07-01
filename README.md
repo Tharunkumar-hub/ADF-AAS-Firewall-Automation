@@ -51,7 +51,9 @@ In many enterprise environments, adding IP addresses to AAS firewall settings re
 - Add logging or notification integration
 
 ---
+# For detailed step, 
+please see my article - https://www.c-sharpcorner.com/article/automating-azure-analysis-services-aas-firewall-whitelisting-using-azure-data/
 
 ## Contributing
 
-Feel free to fork, raise issues, or submit improvements!
+Feel free to fork, raise issues (https://github.com/Tharunkumar-hub/ADF-AAS-Firewall-Automation/issues), or submit improvements by raising Pull Request !
