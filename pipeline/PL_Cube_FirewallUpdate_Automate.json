@@ -1,7 +1,7 @@
 {
     "name": "PL_Cube_FirewallUpdate_Automate",
     "properties": {
-        "description": "This pipeline will whitelist IP in CUBE",
+        "description": "This pipeline will whitelist IP in Azure Analysis Service",
         "activities": [
             {
                 "name": "ACT_GetFirewallRules",
@@ -19,7 +19,7 @@
                 "typeProperties": {
                     "method": "GET",
                     "url": {
-                        "value": "https://management.azure.com/subscriptions/@{pipeline().parameters.Subscription}/resourceGroups/@{pipeline().parameters.ResourceGroupNm}/providers/Microsoft.AnalysisServices/servers/@{pipeline().parameters.CubeNm}?api-version=2017-08-01",
+                        "value": "https://management.azure.com/subscriptions/@{pipeline().parameters.SubscriptionId}/resourceGroups/@{pipeline().parameters.ResourceGroupName}/providers/Microsoft.AnalysisServices/servers/@{pipeline().parameters.ServerName}?api-version=2017-08-01",
                         "type": "Expression"
                     },
                     "body": {
@@ -51,7 +51,7 @@
                 "typeProperties": {
                     "variableName": "Range",
                     "value": {
-                        "value": "@if(\n  contains(activity('ACT_GetFirewallRules').output.properties, 'ipV4FirewallSettings'),\n  json(concat(\n    '[',\n      join(\n        activity('ACT_GetFirewallRules').output.properties.ipV4FirewallSettings.firewallRules,\n        ','\n      ),\n      ',{\"firewallRuleName\":\"',\n        pipeline().parameters.IpFirewallName,\n        '\",\"rangeStart\":\"',\n        pipeline().parameters.IpStartRange,\n        '\",\"rangeEnd\":\"',\n        pipeline().parameters.IpEndRange,\n      '\"}',\n    ']'\n  )),\n  json(concat(\n    '[{\"firewallRuleName\":\"',\n    pipeline().parameters.IpFirewallName,\n    '\",\"rangeStart\":\"',\n    pipeline().parameters.IpStartRange,\n    '\",\"rangeEnd\":\"',\n    pipeline().parameters.IpEndRange,\n    '\"}]'\n  ))\n)",
+                        "value": "@if(\n  contains(activity('ACT_GetFirewallRules').output.properties, 'ipV4FirewallSettings'),\n  json(concat(\n    '[',\n      join(\n        activity('ACT_GetFirewallRules').output.properties.ipV4FirewallSettings.firewallRules,\n        ','\n      ),\n      ',{\"firewallRuleName\":\"',\n        pipeline().parameters.IPFirewallName,\n        '\",\"rangeStart\":\"',\n        pipeline().parameters.IPStartRange,\n        '\",\"rangeEnd\":\"',\n        pipeline().parameters.IPEndRange,\n      '\"}',\n    ']'\n  )),\n  json(concat(\n    '[{\"firewallRuleName\":\"',\n    pipeline().parameters.IPFirewallName,\n    '\",\"rangeStart\":\"',\n    pipeline().parameters.IPStartRange,\n    '\",\"rangeEnd\":\"',\n    pipeline().parameters.IPEndRange,\n    '\"}]'\n  ))\n)",
                         "type": "Expression"
                     }
                 }
@@ -79,7 +79,7 @@
                 "typeProperties": {
                     "method": "PATCH",
                     "url": {
-                        "value": "https://management.azure.com/subscriptions/@{pipeline().parameters.Subscription}/resourceGroups/@{pipeline().parameters.ResourceGroupNm}/providers/Microsoft.AnalysisServices/servers/@{pipeline().parameters.CubeNm}?api-version=2017-08-01",
+                        "value": "https://management.azure.com/subscriptions/@{pipeline().parameters.SubscriptionId}/resourceGroups/@{pipeline().parameters.ResourceGroupName}/providers/Microsoft.AnalysisServices/servers/@{pipeline().parameters.ServerName}?api-version=2017-08-01",
                         "type": "Expression"
                     },
                     "body": {
@@ -94,30 +94,29 @@
             }
         ],
         "parameters": {
-            "EnvName": {
-                "type": "string",
-                "defaultValue": "UAT"
-            },
-            "IpStartRange": {
+            "IPStartRange": {
                 "type": "string",
                 "defaultValue": "20.38.80.192"
             },
-            "IpEndRange": {
+            "IPEndRange": {
                 "type": "string",
                 "defaultValue": "20.38.80.255"
             },
-            "IpFirewallName": {
+            "IPFirewallName": {
                 "type": "string",
                 "defaultValue": "SampleViaADF"
             },
-            "Subscription": {
-                "type": "string"
+            "SubscriptionId": {
+                "type": "string",
+                "defaultValue": "aadfa227-8356-48f8-ac09-c87e7fda15a4"
             },
-            "ResourceGroupNm": {
-                "type": "string"
+            "ResourceGroupName": {
+                "type": "string",
+                "defaultValue": "MyCSharpCorner_RG"
             },
-            "CubeNm": {
-                "type": "string"
+            "ServerName": {
+                "type": "string",
+                "defaultValue": "aascube"
             }
         },
         "variables": {
@@ -126,7 +125,7 @@
             }
         },
         "annotations": [],
-        "lastPublishTime": "2025-06-29T07:58:41Z"
+        "lastPublishTime": "2025-07-07T10:56:26Z"
     },
     "type": "Microsoft.DataFactory/factories/pipelines"
 }
